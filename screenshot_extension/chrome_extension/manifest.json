@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Manga OCR Extension",
+  "version": "1.0",
+  "description": "OCR for manga/Japanese text",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [{
+    "resources": ["panel.html", "panel.js", "settings.png"],
+    "matches": ["<all_urls>"]
+  }]
+}

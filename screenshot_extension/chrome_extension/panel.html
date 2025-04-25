@@ -1,0 +1,135 @@
+<!-- panel.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Panel Widget</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 15px;
+        background-color: #1a1a1a;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 320px;
+      }
+
+      .capture-btn {
+        background-color: #4a9eff;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 15px;
+        width: 100%;
+        font-size: 14px;
+        transition: background-color 0.2s;
+      }
+
+      .capture-btn:hover {
+        background-color: #357abd;
+      }
+
+      .original-text {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .translation-section {
+        background-color: #2a2a2a;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+      }
+
+      .translation-header {
+        color: #888;
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+
+      .translation-text {
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .explain-link {
+        color: #4a9eff;
+        font-size: 12px;
+        text-decoration: none;
+        display: block;
+        margin-top: 5px;
+      }
+
+      .kanji-section {
+        margin-top: 15px;
+      }
+
+      .kanji-header {
+        color: #888;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .kanji-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .kanji-item {
+        background-color: #2a2a2a;
+        padding: 8px;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 12px;
+      }
+
+      .kanji-char {
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+
+      .kanji-meaning {
+        color: #ccc;
+      }
+
+      .settings-icon {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button class="capture-btn" id="captureBtn">Capture Text 📸</button>
+      
+      <div class="original-text" id="original-text"></div>
+
+      <div class="translation-section">
+        <div class="translation-header">Machine Translation</div>
+        <div class="translation-text" id="translation-text"></div>
+        <a href="#" class="explain-link">Explain</a>
+      </div>
+
+      <div class="kanji-section">
+        <div class="kanji-header">Kanji Information</div>
+        <div class="kanji-grid" id="kanji-grid"></div>
+      </div>
+
+      <img src="settings.png" alt="Settings" class="settings-icon">
+    </div>
+    <script src="panel.js"></script>
+  </body>
+</html>
