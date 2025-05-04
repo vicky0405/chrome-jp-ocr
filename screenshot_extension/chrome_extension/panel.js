@@ -3,7 +3,9 @@ window.addEventListener('message', (event) => {
   console.log("Panel nhận được message:", event.data);
   if (event.data && event.data.action === "ocr_result") {
     console.log("Nhận được OCR text:", event.data.ocr_text);
+    console.log("Nhận được translation text:", event.data.translation);
     document.getElementById("original-text").textContent = event.data.ocr_text;
+    document.getElementById("translation-text").textContent = event.data.translation;
     // TODO: Thêm logic để dịch và phân tích kanji
   }
 });

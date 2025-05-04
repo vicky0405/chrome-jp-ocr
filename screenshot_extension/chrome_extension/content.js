@@ -188,9 +188,12 @@ function startCapture() {
               // Gửi kết quả OCR đến iframe
               iframe.contentWindow.postMessage({
                 action: "ocr_result",
-                ocr_text: data.ocr_text
+                ocr_text: data.ocr_text,
+                translation: data.translation
               }, "*");
               console.log("Đã gửi message đến iframe");
+
+              
             })
             .catch((error) => {
               console.error("Error:", error);
