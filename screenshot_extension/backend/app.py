@@ -2,13 +2,14 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 from datetime import datetime
-from manga_ocr import MangaOcr
+from transformers import pipeline
 import requests
 GEMINI_API_KEY = "AIzaSyCxZiDCgHLoB7Ums7Q3cmptBg66kK1OXdM" 
 
 GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
 
 
+mocr = pipeline("image-to-text", model="kha-white/manga-ocr-base")
 app = Flask(__name__)
 CORS(app)
 
@@ -37,8 +38,8 @@ def upload_image():
 
             # Perform OCR and print text
             try:
-                mocr = MangaOcr()  # Initialize MangaOcr
-                ocr_text = mocr(filepath)
+                
+                ocr_text = mocr(filepath)[0]['generated_text']
                 print("OCR Text:", ocr_text)  # Print text to console
                 translation = translate_text(ocr_text)
                 print("Translation:", translation)
@@ -80,5 +81,5 @@ def translate_text(japanese_text, context=None):
     else:
         return None
 
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+if __name__ == "__main__":
+    app.run(debug=True, port=7860)
