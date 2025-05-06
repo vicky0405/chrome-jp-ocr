@@ -174,7 +174,7 @@ function startCapture() {
           const formData = new FormData();
           formData.append("image", blob, "screenshot.png");
 
-          fetch("http://localhost:5000/manga_ocr", {
+          fetch("http://127.0.0.1:7860//manga_ocr", {
             method: "POST",
             body: formData,
           })
