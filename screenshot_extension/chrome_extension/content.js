@@ -1,7 +1,6 @@
 // Toàn bộ code của content.js ở đây
 console.log("content.js loaded");
 
-
 // Nút tròn ở góc phải
 const widgetBtn = document.createElement("div");
 widgetBtn.innerHTML = "💬";
@@ -39,8 +38,8 @@ Object.assign(iframe.style, {
 });
 
 widgetBtn.addEventListener("click", () => {
-  event.stopPropagation();   // Dừng sự kiện khỏi lan truyền
-    event.preventDefault();   // Ngăn trình duyệt hành xử mặc định nếu cần
+  event.stopPropagation(); // Dừng sự kiện khỏi lan truyền
+  event.preventDefault(); // Ngăn trình duyệt hành xử mặc định nếu cần
   iframe.style.display = iframe.style.display === "none" ? "block" : "none";
 });
 
@@ -174,7 +173,7 @@ function startCapture() {
           const formData = new FormData();
           formData.append("image", blob, "screenshot.png");
 
-          fetch("http://127.0.0.1:7860//manga_ocr", {
+          fetch("http://127.0.0.1:7860//ocr", {
             method: "POST",
             body: formData,
           })
@@ -186,14 +185,15 @@ function startCapture() {
 
               console.log("Chuẩn bị gửi OCR text:", data.ocr_text);
               // Gửi kết quả OCR đến iframe
-              iframe.contentWindow.postMessage({
-                action: "ocr_result",
-                ocr_text: data.ocr_text,
-                translation: data.translation
-              }, "*");
+              iframe.contentWindow.postMessage(
+                {
+                  action: "ocr_result",
+                  ocr_text: data.ocr_text,
+                  translation: data.translation,
+                },
+                "*"
+              );
               console.log("Đã gửi message đến iframe");
-
-              
             })
             .catch((error) => {
               console.error("Error:", error);
@@ -217,7 +217,7 @@ function startCapture() {
 }
 
 // Lắng nghe message từ panel.html và popup.js
-window.addEventListener('message', (event) => {
+window.addEventListener("message", (event) => {
   console.log("Content script nhận message:", event.data);
   if (event.data && event.data.action === "start_capture") {
     console.log("Bắt đầu chụp từ content script");
