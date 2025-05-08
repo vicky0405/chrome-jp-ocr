@@ -173,7 +173,7 @@ function startCapture() {
           const formData = new FormData();
           formData.append("image", blob, "screenshot.png");
 
-          fetch("http://127.0.0.1:7860//ocr", {
+          fetch("https://chrome-jp-ocr.onrender.com//ocr", {
             method: "POST",
             body: formData,
           })
