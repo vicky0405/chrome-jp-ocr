@@ -4,8 +4,19 @@ import os
 from datetime import datetime
 import requests
 import base64
+from dotenv import load_dotenv
+load_dotenv()
+# import psutil
 
-GEMINI_API_KEY = "AIzaSyCxZiDCgHLoB7Ums7Q3cmptBg66kK1OXdM" 
+
+# def log_memory_usage():
+#     process = psutil.Process(os.getpid())
+#     mem = process.memory_info().rss / 1024 / 1024
+#     print(f"[MEMORY USAGE] {mem:.2f} MB")
+
+# log_memory_usage()  # Đo RAM khi khởi động server
+
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}"
 
 app = Flask(__name__)
@@ -23,6 +34,7 @@ def home():
 @app.route('/ocr', methods=['POST'])
 def upload_image():
     try:
+        # log_memory_usage()  # Đo RAM trước khi xử lý request
         image_data = request.files['image']
         if image_data:
             # Tạo tên file dựa trên thời gian
@@ -37,6 +49,8 @@ def upload_image():
             with open(filepath, "rb") as image_file:
                 image_bytes = image_file.read()
                 image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+
+            # log_memory_usage()  # Đo RAM sau khi xử lý ảnh
 
             # Gọi Gemini 2.0 FLASH để OCR
             payload = {
@@ -64,6 +78,8 @@ def upload_image():
                 print("OCR Error:", response.text)
                 return jsonify({"error": "OCR failed"}), 500
 
+            # log_memory_usage()  # Đo RAM sau khi hoàn thành OCR và dịch
+
             return jsonify({
                 "message": "Upload successful",
                 "ocr_text": ocr_text,
@@ -83,6 +99,7 @@ def build_prompt(japanese_text, context=None):
     return prompt
 
 def translate_text(japanese_text, context=None):
+    # log_memory_usage()  # Đo RAM trước khi dịch
     prompt = build_prompt(japanese_text, context)
     payload = {
         "contents": [
@@ -95,9 +112,11 @@ def translate_text(japanese_text, context=None):
     if response.status_code == 200:
         result = response.json()
         translation = result['candidates'][0]['content']['parts'][0]['text']
+        # log_memory_usage()  # Đo RAM sau khi dịch
         return translation.strip()
     else:
         return None
 
 if __name__ == "__main__":
     app.run(debug=True, port=7860)
+    # log_memory_usage()  # Đo RAM khi kết thúc server
